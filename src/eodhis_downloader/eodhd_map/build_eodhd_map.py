@@ -214,7 +214,7 @@ def build_eodhd_map(bbg_universe: set) -> pd.DataFrame:
     return map
 
 
-def main():
+def create_tickername_to_bloomberg_mapping():
     historical_bbg = _get_historical_universe_bbg()
     _logger.info(f"historical_universe_bbg, unique symbols:{len(historical_bbg)}")
 
@@ -228,7 +228,6 @@ def main():
     map.to_csv(MAP_EXPORT, index=True, header=True)
     _logger.info(f"saved: {MAP_EXPORT}, rows:{len(map)}")
 
-
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    main()
+    create_tickername_to_bloomberg_mapping()

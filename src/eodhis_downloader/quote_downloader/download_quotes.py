@@ -9,7 +9,7 @@ from concurrent import futures
 import pandas as pd
 from tqdm import tqdm
 
-from build_eodhd_map import MAP_YAHOO, MAP_EODHD
+from eodhis_downloader.eodhd_map.build_eodhd_map import MAP_YAHOO, MAP_EODHD
 
 _logger = logging.getLogger(__name__)
 
@@ -110,9 +110,12 @@ def make_filename_safe(bloomberg_ticker):
     return re.sub(r"[^\w-]", "_", bloomberg_ticker.lower()) + ".pkl"
 
 
-def download_save_all(ticker_map):
+def download_save_all(ticker_map, debug):
     # Shuffle the download order to balance load and wait times with data providers
-    tickers = pd.Series(ticker_map.index).sample(frac=1).unique().tolist()
+    # Reduce the amount of downloaded ticker if you are debugging:
+    frac = 0.05 if debug else 1
+    tickers = pd.Series(ticker_map.index).sample(frac=frac).unique().tolist()
+
 
     with futures.ThreadPoolExecutor(_MAX_WORKERS) as executor:
         _futures = []
@@ -140,12 +143,12 @@ def read_quotes(bloomberg_ticker):
         return None
 
 
-def main():
+def download_tickers_and_map_tickername_to_bloomberg(debug=False):
     map = pd.read_csv(MAP_FILE, index_col=0)
     QUOTE_FOLDER.mkdir(exist_ok=True, parents=True)
-    download_save_all(map)
+    download_save_all(map, debug)
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    main()
+    download_tickers_and_map_tickername_to_bloomberg()
