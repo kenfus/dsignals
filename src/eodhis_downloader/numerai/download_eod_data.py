@@ -10,7 +10,7 @@ from eodhis_downloader.quote_downloader.download_quotes import download_tickers_
 DATA_FOLDER = 'data/eodhist'
 PATH_HISTORIC_DATA = f'{DATA_FOLDER}/historic_data.csv'
 
-def load_concat_all_tickers():
+def load_concat_all_tickers(data_folder):
     # Today:
     today = datetime.now().strftime('%Y-%m-%d')
 
@@ -28,7 +28,7 @@ def load_concat_all_tickers():
             df_ticker['bloomberg_ticker'] = ticker
             tickers_df.append(df_ticker.reset_index())
     df = pd.concat(tickers_df)
-    df.to_parquet(f'{DATA_FOLDER}/full_data_{today}.parquet')
+    df.to_parquet(f'{DATA_FOLDER}/{today}.parquet')
 
 if __name__ == "__main__":
     # Create mapping file:
@@ -36,4 +36,4 @@ if __name__ == "__main__":
     # Download all ticker and rename them. If you pass debug = True, it will download a fraction of all tickers.
     download_tickers_and_map_tickername_to_bloomberg(debug=False)
     # Concat all the files into one dataframe
-    load_concat_all_tickers()
+    load_concat_all_tickers(data_folder='data/eodhist')
