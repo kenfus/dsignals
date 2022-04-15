@@ -7,7 +7,7 @@ from eodhis_downloader.eodhd_map.build_eodhd_map import create_tickername_to_blo
 from eodhis_downloader.quote_downloader.download_quotes import download_tickers_and_map_tickername_to_bloomberg, read_quotes
 
 ## PARAMETERS
-DATA_FOLDER = 'data'
+DATA_FOLDER = 'data/eodhist'
 PATH_HISTORIC_DATA = f'{DATA_FOLDER}/historic_data.csv'
 
 def load_concat_all_tickers():
@@ -28,8 +28,7 @@ def load_concat_all_tickers():
             df_ticker['bloomberg_ticker'] = ticker
             tickers_df.append(df_ticker.reset_index())
     df = pd.concat(tickers_df)
-    print(f'Column Names: {df.columns}')
-    df.to_parquet(f'{DATA_FOLDER}/full_data_eodhis_{today}.parquet')
+    df.to_parquet(f'{DATA_FOLDER}/full_data_{today}.parquet')
 
 if __name__ == "__main__":
     # Create mapping file:
