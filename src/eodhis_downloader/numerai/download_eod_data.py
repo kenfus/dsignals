@@ -28,12 +28,15 @@ def load_concat_all_tickers(data_folder):
             df_ticker['bloomberg_ticker'] = ticker
             tickers_df.append(df_ticker.reset_index())
     df = pd.concat(tickers_df)
-    df.to_parquet(f'{DATA_FOLDER}/{today}.parquet')
+    df.to_parquet(f'{data_folder}/{today}.parquet')
 
-if __name__ == "__main__":
+def create_apply_mapping_download_eod_data(data_folder):
     # Create mapping file:
     create_tickername_to_bloomberg_mapping()
     # Download all ticker and rename them. If you pass debug = True, it will download a fraction of all tickers.
     download_tickers_and_map_tickername_to_bloomberg(debug=False)
     # Concat all the files into one dataframe
-    load_concat_all_tickers(data_folder='data/eodhist')
+    load_concat_all_tickers(data_folder=data_folder)
+
+if __name__ == "__main__":
+    create_apply_mapping_download_eod_data(data_folder='data/eodhist')
