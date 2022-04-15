@@ -7,17 +7,15 @@ import os
 from eodhis_downloader.eodhd_map.build_eodhd_map import create_tickername_to_bloomberg_mapping
 from eodhis_downloader.quote_downloader.download_quotes import download_tickers_and_map_tickername_to_bloomberg, read_quotes
 
-## PARAMETERS
-DATA_FOLDER = 'data/eodhist'
-PATH_HISTORIC_DATA = f'{DATA_FOLDER}/historic_data.csv'
-
 def load_concat_all_tickers(data_folder):
     # Today:
     today = datetime.now().strftime('%Y-%m-%d')
 
     # Get historic Data:
     napi = numerapi.SignalsAPI()
-    os.mkdir(data_folder, exists_ok=True)
+    # Create data folder
+    os.makedirs(data_folder, exist_ok=True)
+    PATH_HISTORIC_DATA = f'{data_folder}/historic_data.csv'
     napi.download_validation_data(dest_filename=PATH_HISTORIC_DATA)
 
     # Read ticker universe:
