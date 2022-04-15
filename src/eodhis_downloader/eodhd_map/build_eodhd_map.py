@@ -226,7 +226,7 @@ def create_tickername_to_bloomberg_mapping():
 
     map = build_eodhd_map(bbg_universe)
     # Create folder. It's OK if it exists
-    os.makedirs(MAP_EXPORT, exist_ok=True)
+    os.makedirs(DB_FOLDER, exist_ok=True)
     map.to_csv(MAP_EXPORT, index=True, header=True)
     _logger.info(f"saved: {MAP_EXPORT}, rows:{len(map)}")
 
