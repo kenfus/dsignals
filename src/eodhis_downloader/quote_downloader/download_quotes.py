@@ -48,7 +48,7 @@ def yahoo_download_one(signals_ticker: str) -> pd.DataFrame:
             "high",
             "low",
             "close",
-            "adjusted_close",
+            "adj close",
             "volume",
         ]
 
@@ -74,7 +74,7 @@ def eodhd_download_one(signals_ticker: str) -> pd.DataFrame:
                 "high",
                 "low",
                 "close",
-                "adjusted_close",
+                "adj close",
                 "volume",
             ]
 
