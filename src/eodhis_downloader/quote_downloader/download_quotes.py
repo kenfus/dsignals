@@ -10,11 +10,14 @@ import pandas as pd
 from tqdm import tqdm
 
 from eodhis_downloader.eodhd_map.build_eodhd_map import MAP_YAHOO, MAP_EODHD
+import yaml
 
 _logger = logging.getLogger(__name__)
 
 # Read eodhistoricaldata.com token fron environment -- or insert into code
-EODHD_TOKEN = os.getenv("NUMERAI_EODHD_TOKEN", "your_eodhd_api_key")
+
+with open('api.yaml', 'r') as file:
+    EODHD_TOKEN = yaml.safe_load(file)['eodhd_token']
 
 DB_FOLDER = Path("./db/")
 DATA_FOLDER = Path("./data/")
@@ -110,10 +113,10 @@ def make_filename_safe(bloomberg_ticker):
     return re.sub(r"[^\w-]", "_", bloomberg_ticker.lower()) + ".pkl"
 
 
-def download_save_all(ticker_map, debug):
+def download_save_all(ticker_map):
     # Shuffle the download order to balance load and wait times with data providers
     # Reduce the amount of downloaded ticker if you are debugging:
-    frac = 0.05 if debug else 1
+    frac = 1
     tickers = pd.Series(ticker_map.index).sample(frac=frac).unique().tolist()
 
 
@@ -143,10 +146,10 @@ def read_quotes(bloomberg_ticker):
         return None
 
 
-def download_tickers_and_map_tickername_to_bloomberg(debug=False):
+def download_tickers_and_map_tickername_to_bloomberg():
     map = pd.read_csv(MAP_FILE, index_col=0)
     QUOTE_FOLDER.mkdir(exist_ok=True, parents=True)
-    download_save_all(map, debug)
+    download_save_all(map)
 
 
 if __name__ == "__main__":
