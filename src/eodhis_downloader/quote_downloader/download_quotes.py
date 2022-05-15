@@ -15,9 +15,11 @@ import yaml
 _logger = logging.getLogger(__name__)
 
 # Read eodhistoricaldata.com token fron environment -- or insert into code
-
-with open('api.yaml', 'r') as file:
-    EODHD_TOKEN = yaml.safe_load(file)['eodhd_token']
+try:
+    with open('api.yaml', 'r') as file:
+        EODHD_TOKEN = yaml.safe_load(file)['eodhd_token']
+except FileNotFoundError:
+    EODHD_TOKEN = os.environ['EODHD_TOKEN']
 
 DB_FOLDER = Path("./db/")
 DATA_FOLDER = Path("./data/")
