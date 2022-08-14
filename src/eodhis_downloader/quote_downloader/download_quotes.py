@@ -28,7 +28,7 @@ QUOTE_FOLDER = Path(DATA_FOLDER / "ticker_bin")
 
 _RETRY_COUNT = 3
 _RETRY_WAIT = 25
-_MAX_WORKERS = 10
+_MAX_WORKERS = None
 
 
 def yahoo_download_one(signals_ticker: str) -> pd.DataFrame:
