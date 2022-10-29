@@ -16,6 +16,9 @@ def load_concat_all_tickers(file_name_path, only_current_universe=False):
     if only_current_universe:
         ticker_universe = pd.Series(napi.ticker_universe(), name='bloomberg_ticker')
     else:
+        # Sometimes, on windows, the file is not correctly overwritten and the pipeline crashes.
+        if os.path.exists(PATH_HISTORIC_DATA):
+            os.remove(PATH_HISTORIC_DATA)
         PATH_HISTORIC_DATA = f'{DATA_FOLDER}/historic_data.csv'
         napi.download_validation_data(dest_filename=PATH_HISTORIC_DATA)
         # Read ticker universe:
